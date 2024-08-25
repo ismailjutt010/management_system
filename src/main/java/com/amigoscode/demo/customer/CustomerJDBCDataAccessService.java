@@ -1,8 +1,5 @@
 package com.amigoscode.demo.customer;
-
-import org.springframework.beans.factory.parsing.SourceExtractor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,20 +18,18 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
 
     @Override
     public List<Customer> getAllCustomers() {
-        var sql = """
-                SELECT id, name, email, age
-                FROM customer
-                """;
+        var sql = "\n" +
+                "SELECT id, name, email, age\n" +
+                "FROM customer\n";
         return jdbcTemplate.query(sql, customerRowMapper);
     }
 
     @Override
     public Optional<Customer> getCustomerById(int id) {
-        var sql = """
-                SELECT id, name, email, age
-                FROM customer
-                WHERE id = ?
-                """;
+        var sql = "\n" +
+                "SELECT id, name, email, age\n" +
+                "FROM customer\n" +
+                "WHERE id = ?\n" ;
 
         return jdbcTemplate.query(sql , customerRowMapper , id)
                 .stream()
@@ -43,12 +38,13 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
 
     @Override
     public void insertCustomer(Customer customer) {
-        var sql = """
-                INSERT INTO customer(name,email,age)
-                VALUES (?, ?, ?)
-                """;
+        var sql = "\n" +
+                "INSERT INTO customer(name,email,age)\n" +
+                "VALUES (?, ?, ?)";
+
         int result = jdbcTemplate.update(
-                sql, customer.getName(),
+                sql,
+                customer.getName(),
                 customer.getEmail(),
                 customer.getAge()
         );
@@ -57,44 +53,44 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
 
     @Override
     public boolean existPersonWithEmail(String email) {
-        var sql = """
-                SELECT count(id)
-                FROM customer 
-                WHERE email = ?
-                """;
+        var sql = "\n" +
+                "SELECT count(id)\n" +
+                "FROM customer \n" +
+                "WHERE email = ?";
+
         Integer count = jdbcTemplate.queryForObject(sql,Integer.class, email);
         return count != null && count > 0 ;
     }
 
     @Override
     public boolean existPersonWithId(int id) {
-        var sql = """
-                SELECT count(id)
-                FROM customer 
-                WHERE id = ?
-                """;
+        var sql = "\n" +
+                "SELECT count(id)\n" +
+                "FROM customer \n" +
+                "WHERE id = ?";
+
         Integer count = jdbcTemplate.queryForObject(sql,Integer.class, id);
         return count != null && count > 0 ;
     }
 
     @Override
     public void deleteCustomerById(int id) {
-        var sql = """
-                DELETE 
-                FROM customer 
-                WHERE id = ?
-                """;
+        var sql = "\n" +
+                "DELETE \n" +
+                "FROM customer \n" +
+                "WHERE id = ?\n" ;
+
         int result = jdbcTemplate.update(sql , id);
     }
 
     @Override
     public void updateCustomer(Customer customer) {
         if(customer.getName() != null){
-            var sql = """
-                    UPDATE customer 
-                    SET name = ?
-                    Where id = ?
-                    """;
+            var sql = "\n" +
+                    "UPDATE customer \n" +
+                    "SET name = ?\n" +
+                    "Where id = ?\n";
+
             int result = jdbcTemplate.update(
                     sql,
                     customer.getName(),
@@ -104,11 +100,11 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
         }
 
         if(customer.getEmail() != null){
-            var sql = """
-                    UPDATE customer 
-                    SET email = ?
-                    Where id = ?
-                    """;
+            var sql = "\n" +
+                   "UPDATE customer \n" +
+                   "SET email = ?\n" +
+                   "Where id = ?\n" ;
+
             int result = jdbcTemplate.update(
                     sql,
                     customer.getEmail(),
@@ -117,11 +113,11 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
             System.out.println("update customer email result = "+result);
         }
         if(customer.getAge() != null){
-            var sql = """
-                    UPDATE customer 
-                    SET age = ?
-                    Where id = ?
-                    """;
+            var sql = "\n" +
+                    "UPDATE customer\n" +
+                    "SET age = ?\n" +
+                    "Where id = ?\n" ;
+
             int result = jdbcTemplate.update(
                     sql,
                     customer.getAge(),

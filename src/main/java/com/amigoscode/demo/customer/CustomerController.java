@@ -37,7 +37,7 @@ public class CustomerController {
         service.deleteCustomer(id);
     }
 
-    @PostMapping("updateCustomer/{id}")
+    @PutMapping("updateCustomer/{id}")
     public void updateCustomer(
             @PathVariable("id") Integer customerId,
             @RequestBody CustomerUpdateRequest updateRequest
