@@ -51,9 +51,9 @@ class CustomerJpaDataAccessServiceTest {
         Customer customer = new Customer(
                 "Ismail",
                 "ismail@gmail.com",
-                25
+                25,
 
-        );
+                Gender.MALE);
         // When
         underTest.insertCustomer(customer);
         //Then
@@ -96,9 +96,9 @@ class CustomerJpaDataAccessServiceTest {
         Customer customer = new Customer(
                 "Ismail",
                 "ismail@gmail.com",
-                25
+                25,
 
-        );
+                Gender.MALE);
         // When
         underTest.insertCustomer(customer);
         //Then

@@ -3,6 +3,7 @@ package com.amigoscode.demo.journey;
 import com.amigoscode.demo.customer.Customer;
 import com.amigoscode.demo.customer.CustomerRegistrationRequest;
 import com.amigoscode.demo.customer.CustomerUpdateRequest;
+import com.amigoscode.demo.customer.Gender;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
 import org.junit.jupiter.api.Test;
@@ -37,10 +38,13 @@ public class CustomerIT {
         String email = fakerName.lastName() + UUID.randomUUID() + "@testenvironment.com";
         int age = RANDOM.nextInt(1, 100);
 
+        Gender gender = age % 2 == 0 ?Gender.MALE : Gender.FEMALE;
+
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
                 name,
                 email,
-                age
+                age,
+                gender
         );
 
 
@@ -69,8 +73,8 @@ public class CustomerIT {
         //make sure that customer is present
 
         Customer expectedCustomer = new Customer(
-                name, email, age
-        );
+                name, email, age,
+                gender);
 
         assertThat(allCustomers).usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -104,11 +108,12 @@ public class CustomerIT {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + UUID.randomUUID() + "@testenvironment.com";
         int age = RANDOM.nextInt(1, 100);
-
+        Gender gender = age % 2 == 0 ?Gender.MALE : Gender.FEMALE;
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
                 name,
                 email,
-                age
+                age,
+                gender
         );
 
 
@@ -169,9 +174,10 @@ public class CustomerIT {
         String name = fakerName.fullName();
         String email = fakerName.lastName() + UUID.randomUUID() + "@testenvironment.com";
         int age = RANDOM.nextInt(1, 100);
+        Gender gender = age % 2 == 0 ?Gender.MALE : Gender.FEMALE;
 
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
-                name, email, age
+                name, email, age, gender
         );
 
 
@@ -234,8 +240,8 @@ public class CustomerIT {
                 .getResponseBody();
 
         Customer expectedCustomer = new Customer(
-                id , newName, email , age
-        );
+                id , newName, email , age,
+                gender);
 
         assertThat(updatedCustomer).isEqualTo(expectedCustomer);
     }
