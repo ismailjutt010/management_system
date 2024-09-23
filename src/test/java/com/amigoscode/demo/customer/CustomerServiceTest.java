@@ -44,7 +44,7 @@ class CustomerServiceTest {
                 id,
                 "alex",
                 "alex@gmail.com",
-                19,
+                "password", 19,
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(c));
@@ -155,7 +155,7 @@ class CustomerServiceTest {
                 id,
                 "alex",
                 "alex@gmail.com",
-                19,
+                "password", 19,
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(customer ));
@@ -191,7 +191,7 @@ class CustomerServiceTest {
                 id,
                 "alex",
                 "alex@gmail.com",
-                19,
+                "password", 19,
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(customer ));
@@ -227,7 +227,7 @@ class CustomerServiceTest {
                 id,
                 "alex",
                 "alex@gmail.com",
-                19,
+                "password", 19,
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(customer ));
@@ -263,7 +263,7 @@ class CustomerServiceTest {
                 id,
                 "alex",
                 "alex@gmail.com",
-                19,
+                "password", 19,
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(customer ));
@@ -300,7 +300,7 @@ class CustomerServiceTest {
                 id,
                 "alex",
                 "alex@gmail.com",
-                19,
+                "password", 19,
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(customer ));
@@ -330,7 +330,7 @@ class CustomerServiceTest {
                 id,
                 "alex",
                 "alex@gmail.com",
-                19,
+                "password", 19,
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(customer ));
