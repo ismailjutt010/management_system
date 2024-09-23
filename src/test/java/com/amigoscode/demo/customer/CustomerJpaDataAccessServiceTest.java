@@ -51,7 +51,7 @@ class CustomerJpaDataAccessServiceTest {
         Customer customer = new Customer(
                 "Ismail",
                 "ismail@gmail.com",
-                25,
+                "password", 25,
 
                 Gender.MALE);
         // When
@@ -96,7 +96,7 @@ class CustomerJpaDataAccessServiceTest {
         Customer customer = new Customer(
                 "Ismail",
                 "ismail@gmail.com",
-                25,
+                "password", 25,
 
                 Gender.MALE);
         // When

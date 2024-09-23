@@ -30,7 +30,7 @@ public class Main {
 			Customer customer = new Customer(
 					firstName+" "+lastName,
 					email,
-					age,
+                    "password", age,
 					gender);
 
 			customerRepository.save(customer);

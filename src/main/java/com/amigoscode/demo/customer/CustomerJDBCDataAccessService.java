@@ -19,7 +19,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
     @Override
     public List<Customer> getAllCustomers() {
         var sql = "\n" +
-                "SELECT id, name, email, age, gender \n" +
+                "SELECT id, name, email,password, age, gender \n" +
                 "FROM customer\n";
         return jdbcTemplate.query(sql, customerRowMapper);
     }
@@ -27,7 +27,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
     @Override
     public Optional<Customer> getCustomerById(int id) {
         var sql = "\n" +
-                "SELECT id, name, email, age, gender\n" +
+                "SELECT id, name, email,password, age, gender\n" +
                 "FROM customer\n" +
                 "WHERE id = ?\n" ;
 
@@ -39,13 +39,14 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
     @Override
     public void insertCustomer(Customer customer) {
         var sql = "\n" +
-                "INSERT INTO customer(name,email,age, gender)\n" +
-                "VALUES (?, ?, ?, ?)";
+                "INSERT INTO customer( name, email, password, age, gender)\n" +
+                "VALUES (?, ?, ?, ?, ?)";
 
         int result = jdbcTemplate.update(
                 sql,
                 customer.getName(),
                 customer.getEmail(),
+                customer.getPassword(),
                 customer.getAge(),
                 customer.getGender().name()
         );
@@ -126,5 +127,17 @@ public class CustomerJDBCDataAccessService implements CustomerDAO{
             );
             System.out.println("update customer age result = "+result);
         }
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        var sql = "\n" +
+                "SELECT id, name, email,password, age, gender\n" +
+                "FROM customer\n" +
+                "WHERE email = ?\n" ;
+
+        return jdbcTemplate.query(sql , customerRowMapper , email)
+                .stream()
+                .findFirst();
     }
 }

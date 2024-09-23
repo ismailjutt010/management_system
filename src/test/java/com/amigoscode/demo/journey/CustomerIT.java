@@ -73,7 +73,7 @@ public class CustomerIT {
         //make sure that customer is present
 
         Customer expectedCustomer = new Customer(
-                name, email, age,
+                name, email, "password", age,
                 gender);
 
         assertThat(allCustomers).usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
@@ -240,7 +240,7 @@ public class CustomerIT {
                 .getResponseBody();
 
         Customer expectedCustomer = new Customer(
-                id , newName, email , age,
+                id , newName, email , "password", age,
                 gender);
 
         assertThat(updatedCustomer).isEqualTo(expectedCustomer);
