@@ -21,12 +21,12 @@ public class CustomerController {
     }
 
     @GetMapping("getAllCustomers")
-    public List<Customer> allCustomers(){
+    public List<CustomerDTO> allCustomers(){
         return service.getAllCustomers();
     }
 
     @GetMapping("{id}")
-    public Customer getCustomerById(@PathVariable("id") int id){
+    public CustomerDTO getCustomerById(@PathVariable("id") int id){
         return service.getCustomerById(id);
     }
 

@@ -5,7 +5,7 @@ import {
     DrawerCloseButton,
     DrawerContent, DrawerFooter,
     DrawerHeader,
-    DrawerOverlay, Input, useDisclosure
+    DrawerOverlay, useDisclosure
 } from "@chakra-ui/react";
 import CreateCustomerForm from "./CreateCustomerForm.jsx";
 
@@ -13,6 +13,7 @@ import CreateCustomerForm from "./CreateCustomerForm.jsx";
 const AddIcon = ()=> "+"
 const closeIcon = ()=> "x"
 
+// eslint-disable-next-line react/prop-types
 const CreateCustomerDrawer = ({fetchCustomers})=>{
     const { isOpen, onOpen, onClose } = useDisclosure()
 

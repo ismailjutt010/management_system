@@ -4,25 +4,36 @@ import com.amigoscode.demo.exceptions.DuplicateResourceException;
 import com.amigoscode.demo.exceptions.RequestValidationException;
 import com.amigoscode.demo.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
 
     private final CustomerDAO customerDAO;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper mapper;
 
-    public CustomerService(@Qualifier("jdbc") CustomerDAO dao) {
+    public CustomerService(@Qualifier("jdbc") CustomerDAO dao, PasswordEncoder passwordEncoder, CustomerDTOMapper mapper) {
         this.customerDAO = dao;
+        this.passwordEncoder = passwordEncoder;
+        this.mapper = mapper;
     }
 
-    public List<Customer> getAllCustomers(){
-        return customerDAO.getAllCustomers();
+    public List<CustomerDTO> getAllCustomers(){
+        return customerDAO
+                .getAllCustomers()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList());
     }
 
-    public Customer getCustomerById(int id){
+    public CustomerDTO getCustomerById(int id){
         return customerDAO.getCustomerById(id)
+                .map(mapper)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer with id [%s] not found".formatted(id)));
     }
 
@@ -34,7 +45,8 @@ public class CustomerService {
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
-                "password", customerRegistrationRequest.age(),
+                passwordEncoder.encode(customerRegistrationRequest.password()),
+                customerRegistrationRequest.age(),
                 customerRegistrationRequest.gender());
         customerDAO.insertCustomer(customer);
     }
@@ -47,7 +59,9 @@ public class CustomerService {
     }
 
     public void updateCustomer(Integer customerId , CustomerUpdateRequest updateRequest){
-        Customer customer = getCustomerById(customerId);
+        Customer customer = customerDAO.getCustomerById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with id [%s] not found".formatted(customerId)));
+
         boolean changes = false;
 
         if(updateRequest.name() !=null && !customer.getName().equalsIgnoreCase(updateRequest.name())){

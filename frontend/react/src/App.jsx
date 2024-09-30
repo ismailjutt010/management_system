@@ -33,7 +33,8 @@ const App= ()=>{
         fetchCustomers();
     }, []);
 
-    if(err!=""){
+
+    if(err!==""){
         return (
             <SidebarWithHeader>
                 <CreateCustomerDrawer

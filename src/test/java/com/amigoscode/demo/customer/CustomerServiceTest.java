@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -21,10 +22,13 @@ class CustomerServiceTest {
 
     private CustomerService underTest;
     @Mock private CustomerDAO customerDAO;
+    @Mock private PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper customerDTOMapper = new CustomerDTOMapper();
+
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDAO);
+        underTest = new CustomerService(customerDAO, passwordEncoder,customerDTOMapper);
     }
 
 
@@ -48,10 +52,12 @@ class CustomerServiceTest {
                 Gender.MALE);
 
         when(customerDAO.getCustomerById(id)).thenReturn(Optional.of(c));
+
+        CustomerDTO expected = customerDTOMapper.apply(c);
         // When
-        Customer actual = underTest.getCustomerById(10);
+        CustomerDTO actual = underTest.getCustomerById(10);
         //Then
-        assertThat(actual).isEqualTo(c);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -78,9 +84,12 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                  "Alex",
                  email,
-                19,
+                "password", 19,
                 Gender.MALE
         );
+
+        String passwordHash = "033225115@$6565@";
+        when(passwordEncoder.encode(registrationRequest.password())).thenReturn(passwordHash);
         // When
         underTest.addCustomer(registrationRequest);
         //Then
@@ -95,6 +104,7 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getName()).isEqualTo(registrationRequest.name());
         assertThat(capturedCustomer.getAge()).isEqualTo(registrationRequest.age());
         assertThat(capturedCustomer.getEmail()).isEqualTo(registrationRequest.email());
+        assertThat(capturedCustomer.getPassword()).isEqualTo(passwordHash); 
     }
 
     @Test
@@ -106,7 +116,7 @@ class CustomerServiceTest {
         CustomerRegistrationRequest registrationRequest = new CustomerRegistrationRequest(
                 "Alex",
                 email,
-                19,
+                "password", 19,
                 Gender.MALE
         );
         // When
