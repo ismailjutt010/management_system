@@ -2,8 +2,8 @@ import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
 import React from "react";
-import {saveCustomer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {saveCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -50,6 +50,7 @@ const CreateCustomerForm = ({fetchCustomers}) => {
                     email: '',
                     age: 0,
                     gender: '',
+                    password:'',
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string()
@@ -61,6 +62,9 @@ const CreateCustomerForm = ({fetchCustomers}) => {
                     age: Yup.number().min(16,'Must be at least 16 years of age')
                         .max(100,'Must be less than 100 years of age')
                         .required('Required'),
+                    password: Yup.string()
+                        .min(6, 'Must be atleast 6 characters')
+                        .required('Password Required'),
                     gender: Yup.string()
                         .oneOf(
                             ['MALE', 'FEMALE'],
@@ -113,6 +117,13 @@ const CreateCustomerForm = ({fetchCustomers}) => {
                                 name="age"
                                 type="number"
                                 placeholder="24"
+                            />
+
+                            <MyTextInput
+                                label="Password"
+                                name="password"
+                                type="password"
+                                placeholder="Add Password"
                             />
 
                             <MySelect label="Gender" name="gender">

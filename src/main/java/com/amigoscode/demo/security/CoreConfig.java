@@ -9,6 +9,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 // public class WebMvcConfig implements WebMvcConfigurer {
@@ -24,13 +25,15 @@ public class CoreConfig {
 //    }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.addAllowedHeader(HttpHeaders.AUTHORIZATION);
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173")); // Specify your frontend origin
+        configuration.setAllowedMethods(Collections.singletonList("*")); // Allow all HTTP methods
+        configuration.setAllowedHeaders(Collections.singletonList("*")); // Allow all headers
+        configuration.setAllowCredentials(true); // Allow credentials (cookies, authorization headers, etc.)
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**" , configuration);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
