@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import {Formik, Form, useField} from "formik";
 import * as Yup from 'yup'
-import React from "react";
+import React, {useEffect} from "react";
 import {useAuth} from "../Context/AuthContext.jsx";
 import {errorNotification} from "../../services/notification.js";
 import {useNavigate} from "react-router-dom";
@@ -98,6 +98,14 @@ const LoginForm = () => {
 }
 
 const Login = () => {
+    const {customer } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(()=> {
+        if(customer) {
+            navigate("/dashboard")
+        }
+    })
     return (
         <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
             <Flex p={8} flex={1} align={'center'} justify={'center'}>
